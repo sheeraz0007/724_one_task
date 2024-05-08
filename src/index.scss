@@ -1,0 +1,25 @@
+
+body {
+  margin: 0;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;
+}
+.main-wrapper {
+  min-height: 100vh;
+  // padding: 10px 10px 0px 20px;
+  padding: 20px 20px 20px 20px;
+}
+.simplebar-placeholder{
+display: none;
+}
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1000;
+}
