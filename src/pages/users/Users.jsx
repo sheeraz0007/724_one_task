@@ -1,5 +1,5 @@
 import { filter } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
@@ -20,29 +20,26 @@ import {
   CircularProgress,
 } from '@mui/material';
 // components
-import UserListHead from './components/UserListHead';
-import UserListToolbar from './components/UserListToolbar';
-import UserMoreMenu from './components/UserMoreMenu';
-// mock
-import usersList from '../../_mock/user';
 //
 import { useNavigate } from 'react-router-dom';
-import SearchNotFound from './components/SearchNotFound';
-import Page from './components/Page';
-import Label from './components/Label';
 import Scrollbar from './components/Scrollbar';
-import Iconify from 'components/Iconify';
 import { useGetUsersListQuery } from 'services/public/auth';
 import { editUserData, setUserData } from 'store/slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon } from '@iconify/react';
-import EditUser from './components/EditUser';
+
 import { makeStyles } from '@mui/styles';
+const EditUser = lazy(() => import('./components/EditUser'));
+const SearchNotFound = lazy(() => import('./components/SearchNotFound'));
+const UserListHead = lazy(() => import('./components/UserListHead'));
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: '#', label: '#', alignRight: false },
   { id: 'name', label: 'Name', alignRight: false },
+  { id: 'address', label: 'Address', alignRight: false },
+
   { id: 'action', label: 'Action', alignRight: true },
 ];
 const useStyles = makeStyles(() => ({
@@ -177,7 +174,7 @@ export default function Users() {
                 {filteredUsers
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
-                    const { id, firstName } = row;
+                    const { id, firstName, image, address } = row;
                     const isItemSelected = selected.indexOf(firstName) !== -1;
 
                     return (
@@ -196,13 +193,19 @@ export default function Users() {
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            {/* <Avatar alt={firstName} src={avatarUrl} /> */}
+                            <Avatar alt={firstName} src={image} />
                             <Typography variant="subtitle2" noWrap>
                               {firstName}
                             </Typography>
                           </Stack>
                         </TableCell>
-
+                        <TableCell component="th" scope="row" padding="none">
+                          <Stack direction="row" alignItems="center" spacing={2}>
+                            <Typography variant="subtitle2" noWrap>
+                              {address?.address}
+                            </Typography>
+                          </Stack>
+                        </TableCell>
                         <TableCell align="right">
                           <span>
                             <IconButton aria-label="delete" color="primary" onClick={() => openEdit(row)}>

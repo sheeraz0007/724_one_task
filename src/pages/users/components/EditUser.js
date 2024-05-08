@@ -47,7 +47,8 @@ export default function EditUser({ open, setOpen, data }) {
   const dispatch = useDispatch();
   const usersList = useSelector(state => state.user.usersList);
   const [inputs, setInputs] = React.useState({
-    title: '',
+    name: '',
+    address: '',
   });
   const handleClose = () => {
     setIsLoading(false);
@@ -56,7 +57,12 @@ export default function EditUser({ open, setOpen, data }) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    let payload = { ...data, firstName: inputs?.name };
+    let payload = {
+      ...data,
+      firstName: inputs?.name,
+      address: { ...data.address, address: inputs?.address },
+    };
+
     let updatedList = usersList.map(user => {
       if (user.id === data?.id) {
         // update user
@@ -82,10 +88,12 @@ export default function EditUser({ open, setOpen, data }) {
     setInputs(prevState => ({
       ...prevState,
       ['name']: data.firstName,
+      ['address']: data?.address?.address,
     }));
     return () => {
       setInputs(prevState => ({
         ['name']: '',
+        ['address']: '',
       }));
     };
   }, [data]);
@@ -149,6 +157,19 @@ export default function EditUser({ open, setOpen, data }) {
                       fullWidth
                       name="name"
                       value={inputs.name}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-lg-12 col-md-12 col-sm-12 mt-4">
+                    <TextField
+                      id="outlined-basic"
+                      label=" Address*"
+                      variant="outlined"
+                      fullWidth
+                      name="address"
+                      value={inputs.address}
                       onChange={handleChange}
                     />
                   </div>
